@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Platform Game </title>
+		<script src="https://simplycodingcourses.com/files/simplyjs/simply.js"></script>
+		<script>
+			function start(){
+				sjs.open("target", 800,500);
+
+
+					var father = new sjs.Image("Images/father_right.png");
+					father.type = "father";
+					father.setSize(100,100);
+					father.center().offset(-200, -100);
+
+					var boybtn = new sjs.Button("father", function(){
+						window.location = "game.html";
+					});
+					boybtn.center().offset(-200,0);
+
+
+					var beauty = new sjs.Image("Images/beauty_right.png");
+					beauty.type = "beauty";
+					beauty.setSize(100,100);
+					beauty.center().offset(200, -100);
+
+					var girlbtn = new sjs.Button("Beauty", function(){
+						window.location = "game.html";
+					});
+					girlbtn.center().offset(200,0);
+
+
+			}//end start function
+		</script>
+	</head>
+	<body onload="start()">
+		<h1> Platform Game </h1>
+
+		<div id="target" style="margin:auto;background:grey;"></div>
+	</body>
+</html>

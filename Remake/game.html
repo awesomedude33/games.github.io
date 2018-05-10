@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Platform Game </title>
+		<script src="https://simplycodingcourses.com/files/simplyjs/simply.js"></script>
+		<script>
+			function start(){
+				sjs.open("target", 800, 500);
+
+					var background = new sjs.Image("Images/background.png");
+					background.setSize(2500, 500);
+
+					var upgrade_1 = true;
+					var money = 100;
+					var money_text = new sjs.Text("$" + money, 28, "black");
+					money_text.fixed = true;
+
+
+					//player properties
+					var player = new sjs.Image("Images/father_right.png");
+					player.type = "player";
+					player.setSize(100,100);	
+					player.bottom().offset(1400,-50);		
+					player.setGravity(3);
+					player.friction = .6;
+					player.noBounds = false;
+
+					sjs.scrollable(player, background);
+
+
+					var worker = new sjs.Image("Images/worker_right.png");
+					worker.type = "worker";
+					worker.setSize(100,100);
+					worker.bottom().offset(1500,-50);
+					worker.friction = .6;
+					worker.noBounds = false;
+
+
+					worker.node.onclick = function(){
+						if(upgrade_1 == true){
+						upgrade_1 = false;
+						var upgrade_one_text = new sjs.Text("Buy floor one's walls", 38, "black");
+						upgrade_one_text.center().offset(-sjs.gx,-150);
+						upgrade_one_button = new sjs.Button("Buy", function(){
+							if(money >= 50){
+								money -= 50;
+								money_text.setText("$" + money);
+								upgrade_one_text.setText("You have just bought the first floor's walls");
+								var up_one = new sjs.Image("Images/floor_1_walls.png");
+								up_one.type = "up_one";
+								up_one.setSize(700, 400);
+								up_one.offset(1700,50);
+								setTimeout(function(){
+									upgrade_one_text.setText("");
+									upgrade_one_button.destroy();
+								},2000);
+							} else {
+								upgrade_one_text.setText("You don't have enough money");
+								setTimeout(function(){
+									upgrade_one_text.setText("");
+									upgrade_one_button.destroy();
+								},2000);
+							}
+						});
+						upgrade_one_button.center();
+						}
+					}
+
+
+					// key down functions
+					sjs.keyDown(D_KEY, function(){
+						player.pushRight(2.5);
+						player.setImage("Images/father_right.png");
+					});
+
+					sjs.keyDown(A_KEY, function(){
+						player.pushLeft(2.5);
+						player.setImage("Images/father_left.png");
+					});
+
+					var canjump = true;
+					sjs.keyDown(W_KEY, function(){
+						if(canjump == true){
+							player.pushUp(56);
+							canjump = false;
+						}
+					});
+
+					var land = new sjs.Image("Images/grass.png");
+					land.type = "land";
+					land.setSize(1800, 50);
+					land.bottom().offset(700, 0);
+
+					var water = new sjs.Image("Images/water.png");
+					water.type = "water";
+					water.setSize(700, 45);
+					water.bottom();
+
+
+					//onHits
+					sjs.onHit("player","bottom_screen", function(x,y){
+						sjs.stoppedBy(x,y);
+						if(canjump == false){
+							canjump = true;
+						}
+					});
+
+					sjs.onHit("player",["left_screen","right_screen","up_screen"], function(x,y){
+						sjs.stoppedBy(x,y);
+					});
+
+					sjs.onHit("player","land", function(x,y){
+						sjs.stoppedBy(x,y);
+						if(canjump == false){
+							canjump = true;
+						}
+					});
+
+
+			}//end start function
+
+
+		</script>
+	</head>
+	<body onload="start()">
+		<h1> Platform Game </h1>
+		<div id="target" style="margin:auto;background:grey;"></div>
+	</body>
+</html>
